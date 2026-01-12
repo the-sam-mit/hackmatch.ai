@@ -11,9 +11,10 @@ if "GEMINI_API_KEY" in os.environ:
 
 model = genai.GenerativeModel('gemini-2.5-flash-lite')
 
-async def generate_hackathon_idea(languages: list, topics: list):
+async def generate_hackathon_idea(languages: list, topics: list, problem_statement: str | None = None):
     """
     Generates a hackathon idea based on skills (languages/topics) and current trends.
+    Optionally considers a specific problem statement or theme.
     """
     
     # Simple trend snapshot (mimicking what would be a live search/RSS feed)
@@ -25,6 +26,10 @@ async def generate_hackathon_idea(languages: list, topics: list):
         "Hyper-local community platforms"
     ]
     
+    constraint_text = ""
+    if problem_statement:
+        constraint_text = f"Constraint/Theme: The project MUST address the following problem statement: '{problem_statement}'"
+
     prompt = f"""
     You are a Hackathon Idea Generator. Create a unique, winning hackathon project idea.
     
@@ -34,6 +39,8 @@ async def generate_hackathon_idea(languages: list, topics: list):
     
     Current Trends:
     {', '.join(trends)}
+
+    {constraint_text}
     
     Generate a formatted JSON object with the following structure:
     {{

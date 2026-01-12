@@ -7,6 +7,7 @@ app = FastAPI()
 
 class UserRequest(BaseModel):
     username: str
+    problem_statement: str | None = None
 
 @app.get("/")
 def read_root():
@@ -24,7 +25,8 @@ async def generate_idea(request: UserRequest):
         # 2. Generate Idea using Gemini
         idea = await generate_hackathon_idea(
             user_data.get("languages", []),
-            user_data.get("topics", [])
+            user_data.get("topics", []),
+            request.problem_statement
         )
         
         return idea

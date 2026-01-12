@@ -13,6 +13,7 @@ interface Idea {
 
 export default function Home() {
     const [username, setUsername] = useState('')
+    const [problemStatement, setProblemStatement] = useState('')
     const [loading, setLoading] = useState(false)
     const [idea, setIdea] = useState<Idea | null>(null)
     const [error, setError] = useState('')
@@ -28,7 +29,10 @@ export default function Home() {
             const res = await fetch('/api/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username }),
+                body: JSON.stringify({
+                    username,
+                    problem_statement: problemStatement || null
+                }),
             })
 
             if (!res.ok) {
@@ -52,15 +56,26 @@ export default function Home() {
                     Turn your GitHub profile into a winning hackathon project using Agentic AI.
                 </p>
 
-                <div className="input-group">
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Enter GitHub Username (e.g., torvalds)"
-                        onKeyDown={(e) => e.key === 'Enter' && generateIdea()}
-                    />
-                    <button onClick={generateIdea} disabled={loading}>
+                <div className="input-group" style={{ flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{ display: 'flex', width: '100%', gap: '1rem' }}>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Enter GitHub Username (e.g., torvalds)"
+                            onKeyDown={(e) => e.key === 'Enter' && generateIdea()}
+                        />
+                    </div>
+                    <div style={{ display: 'flex', width: '100%', gap: '1rem' }}>
+                        <input
+                            type="text"
+                            value={problemStatement}
+                            onChange={(e) => setProblemStatement(e.target.value)}
+                            placeholder="Problem Statement / Theme (Optional)"
+                            onKeyDown={(e) => e.key === 'Enter' && generateIdea()}
+                        />
+                    </div>
+                    <button onClick={generateIdea} disabled={loading} style={{ width: '100%' }}>
                         {loading ? 'Generating...' : 'Generate Idea'}
                     </button>
                 </div>
