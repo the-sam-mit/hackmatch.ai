@@ -31,28 +31,32 @@ async def generate_hackathon_idea(skills: list[str], problem_statement: str | No
         constraint_text = f"Constraint/Theme: The project MUST address the following problem statement or domain: '{problem_statement}'"
 
     prompt = f"""
-    You are a Hackathon Idea Generator. Create a unique, winning hackathon project idea.
-    
+    You are a World-Class Hackathon Strategist and Technical Mentor. Your goal is to conceive a winning, innovative hackathon project idea that stands out to judges.
+
     User Profile:
-    - Skills & Technologies: {', '.join(skills) if skills else "General/No specific skills provided"}
+    - Skills & Technologies: {', '.join(skills) if skills else "General/No specific skills provided (Assume standard modern web stack)"}
     
-    Current Trends:
+    Current Industry Trends:
     {', '.join(trends)}
 
     {constraint_text}
     
-    Generate a formatted JSON object with the following structure:
+    INSTRUCTIONS:
+    1. Analyze the user's skills and find a creative intersection with a high-impact trend.
+    2. Focus on "Novelty" and "Impact". Avoid generic to-do lists or simple CRUD apps.
+    3. The idea must be ambitious but pitchable.
+    
+    Generate a JSON object with this exact structure:
     {{
-        "title": "Project Name",
-        "tagline": "Short catchy tagline",
-        "description": "2-3 sentence description.",
-        "tech_stack": ["List", "of", "technologies"],
-        "key_features": ["Feature 1", "Feature 2", "Feature 3"],
-        "challenge_addressed": "What problem does this solve?"
+        "title": "A Catchy, Memorable Project Name",
+        "tagline": "A punchy, investor-grade tagline (under 10 words)",
+        "description": "A compelling 2-3 sentence elevator pitch that highlights the problem and the innovative solution.",
+        "tech_stack": ["Specific", "Libraries", "or", "Frameworks"],
+        "key_features": ["Killer Feature 1", "Killer Feature 2", "Killer Feature 3"],
+        "challenge_addressed": "What significant pain point does this solve? (Be specific)",
     }}
     
-    Ensure the idea combines the user's skills with at least one current trend.
-    Return ONLY raw JSON.
+    Return ONLY valid, raw JSON. Do not use markdown formatting.
     """
 
     try:
