@@ -13,25 +13,27 @@ interface Idea {
 
 export default function Home() {
     const [username, setUsername] = useState('')
+    const [skills, setSkills] = useState('')
     const [problemStatement, setProblemStatement] = useState('')
     const [loading, setLoading] = useState(false)
     const [idea, setIdea] = useState<Idea | null>(null)
     const [error, setError] = useState('')
 
     const generateIdea = async () => {
-        if (!username.trim()) return
-
         setLoading(true)
         setError('')
         setIdea(null)
 
         try {
+            const skillsList = skills.split(',').map(s => s.trim()).filter(s => s.length > 0)
+
             const res = await fetch('/api/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    username,
-                    problem_statement: problemStatement || null
+                    username: username.trim() || null,
+                    skills: skillsList,
+                    problem_statement: problemStatement.trim() || null
                 }),
             })
 
@@ -42,7 +44,7 @@ export default function Home() {
             const data = await res.json()
             setIdea(data)
         } catch (err) {
-            setError('Something went wrong. Please check the username and try again.')
+            setError('Something went wrong. Please try again.')
         } finally {
             setLoading(false)
         }
@@ -50,86 +52,110 @@ export default function Home() {
 
     return (
         <main className="container">
-            <div style={{ marginTop: '4rem', textAlign: 'center' }}>
-                <h1>Hackathon Idea Generator</h1>
-                <p className="subtitle">
-                    Turn your GitHub profile into a winning hackathon project using Agentic AI.
-                </p>
+            <h1 className="glow-text">Hackathon Idea Generator</h1>
+            <p className="subtitle">
+                &lt; System.Initialize_Agentic_Protocol /&gt;
+            </p>
 
-                <div className="input-group" style={{ flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                    <div style={{ display: 'flex', width: '100%', gap: '1rem' }}>
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Enter GitHub Username (e.g., torvalds)"
-                            onKeyDown={(e) => e.key === 'Enter' && generateIdea()}
-                        />
-                    </div>
-                    <div style={{ display: 'flex', width: '100%', gap: '1rem' }}>
+            <div className="command-center fade-in delay-1" style={{ maxWidth: '900px', margin: '0 auto' }}>
+                <div className="layout-col">
+
+                    <div>
                         <input
                             type="text"
                             value={problemStatement}
                             onChange={(e) => setProblemStatement(e.target.value)}
-                            placeholder="Problem Statement / Theme (Optional)"
+                            placeholder="Problem Statement or Domain"
                             onKeyDown={(e) => e.key === 'Enter' && generateIdea()}
                         />
                     </div>
-                    <button onClick={generateIdea} disabled={loading} style={{ width: '100%' }}>
-                        {loading ? 'Generating...' : 'Generate Idea'}
-                    </button>
-                </div>
 
-                {error && (
-                    <div style={{ color: '#ef4444', textAlign: 'center', marginBottom: '2rem' }}>
-                        {error}
+                    <div className="layout-row">
+                        <div style={{ flex: 1 }}>
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="GitHub Username"
+                            />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                            <input
+                                type="text"
+                                value={skills}
+                                onChange={(e) => setSkills(e.target.value)}
+                                placeholder="Skills (e.g. React, Three.js)"
+                            />
+                        </div>
                     </div>
-                )}
 
-                {idea && (
-                    <div className="glass-card fade-in">
-                        <h2 style={{ marginTop: 0, color: '#3b82f6' }}>{idea.title}</h2>
-                        <p style={{ fontSize: '1.25rem', color: '#cbd5e1', fontStyle: 'italic' }}>
-                            {idea.tagline}
-                        </p>
+                    <div className="mt-8">
+                        <button
+                            className="btn-cyber"
+                            onClick={generateIdea}
+                            disabled={loading}
+                        >
+                            {loading ? 'PROCESSING DATA...' : 'INITIALIZE GENERATION'}
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-                        <div style={{ margin: '2rem 0' }}>
-                            <h3 style={{ color: '#94a3b8', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                The Concept
-                            </h3>
-                            <p>{idea.description}</p>
+            {error && (
+                <div style={{ color: '#ff0055', textAlign: 'center', marginTop: '2rem', fontFamily: 'monospace' }}>
+                    [ERROR]: {error}
+                </div>
+            )}
+
+            {idea && (
+                <div className="result-frame fade-in">
+                    <div className="result-header">
+                        <span style={{ fontFamily: 'monospace', color: '#00f2ff' }}>ID: {Math.floor(Math.random() * 999999)}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <span style={{ fontSize: '0.8rem', color: '#ff00ff', letterSpacing: '2px' }}>LIVE</span>
+                            <div className="status-dot"></div>
+                        </div>
+                    </div>
+
+                    <div className="result-content">
+                        <div className="text-center">
+                            <h2>{idea.title}</h2>
+                            <span className="tagline">"{idea.tagline}"</span>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                        <div className="mb-4" style={{ borderLeft: '2px solid #00f2ff', paddingLeft: '1.5rem', marginBottom: '3rem' }}>
+                            <p style={{ fontSize: '1.1rem', lineHeight: '1.8', color: '#e0e0e0' }}>{idea.description}</p>
+                        </div>
+
+                        <div className="grid-cyber">
                             <div>
-                                <h3 style={{ color: '#94a3b8', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                    Tech Stack
-                                </h3>
-                                <div style={{ marginTop: '0.5rem' }}>
+                                <h3>Tech Stack Database</h3>
+                                <div>
                                     {idea.tech_stack.map((tech) => (
-                                        <span key={tech} className="tag">{tech}</span>
+                                        <span key={tech} className="tech-tag">{tech}</span>
                                     ))}
                                 </div>
                             </div>
 
                             <div>
-                                <h3 style={{ color: '#94a3b8', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                    Key Features
-                                </h3>
-                                <ul style={{ paddingLeft: '1.25rem', marginTop: '0.5rem' }}>
+                                <h3>Core Modules</h3>
+                                <ul className="cyber-list">
                                     {idea.key_features.map((feature) => (
-                                        <li key={feature} style={{ marginBottom: '0.25rem' }}>{feature}</li>
+                                        <li key={feature}>
+                                            {feature}
+                                        </li>
                                     ))}
                                 </ul>
                             </div>
                         </div>
 
-                        <div style={{ marginTop: '2rem', padding: '1rem', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px' }}>
-                            <strong>Challenge Addressed:</strong> {idea.challenge_addressed}
+                        <div style={{ marginTop: '3rem', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1.5rem' }}>
+                            <span style={{ color: '#707090', fontSize: '0.8rem', letterSpacing: '0.1em' }}>AMBITION METRIC:</span>
+                            <p style={{ color: '#fff', marginTop: '0.5rem' }}>{idea.challenge_addressed}</p>
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </main>
     )
 }

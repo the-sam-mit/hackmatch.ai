@@ -6,7 +6,8 @@ from api.utils.gemini import generate_hackathon_idea
 app = FastAPI()
 
 class UserRequest(BaseModel):
-    username: str
+    username: str | None = None
+    skills: list[str] = []
     problem_statement: str | None = None
 
 @app.get("/")
@@ -15,17 +16,18 @@ def read_root():
 
 @app.post("/api/generate")
 async def generate_idea(request: UserRequest):
-    if not request.username:
-        raise HTTPException(status_code=400, detail="Username is required")
-
     try:
-        # 1. Fetch User Data
-        user_data = await get_user_data(request.username)
+        all_skills = set(request.skills)
+        
+        # 1. Fetch User Data (Optional)
+        if request.username:
+             github_data = await get_user_data(request.username)
+             all_skills.update(github_data.get("languages", []))
+             all_skills.update(github_data.get("topics", []))
         
         # 2. Generate Idea using Gemini
         idea = await generate_hackathon_idea(
-            user_data.get("languages", []),
-            user_data.get("topics", []),
+            list(all_skills),
             request.problem_statement
         )
         
