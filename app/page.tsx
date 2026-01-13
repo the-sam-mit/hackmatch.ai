@@ -52,107 +52,97 @@ export default function Home() {
 
     return (
         <main className="container">
-            <h1 className="glow-text">Hackathon Idea Generator</h1>
-            <p className="subtitle">
-                &lt; System.Initialize_Agentic_Protocol /&gt;
+            <h1 className="fade-in">Hackathon Idea Generator</h1>
+            <p className="subtitle fade-in">
+                Turn your skills into a winning hackathon project using Agentic AI.
             </p>
 
-            <div className="command-center fade-in delay-1" style={{ maxWidth: '900px', margin: '0 auto' }}>
-                <div className="layout-col">
+            <div className="clean-card fade-in" style={{ animationDelay: '0.1s' }}>
+                <div className="form-group">
+                    <label>Problem Statement or Domain</label>
+                    <input
+                        type="text"
+                        value={problemStatement}
+                        onChange={(e) => setProblemStatement(e.target.value)}
+                        placeholder="e.g. Sustainable Energy, Healthcare, Fintech..."
+                        onKeyDown={(e) => e.key === 'Enter' && generateIdea()}
+                    />
+                </div>
 
-                    <div>
+                <div className="row">
+                    <div className="col form-group">
+                        <label>GitHub Username</label>
                         <input
                             type="text"
-                            value={problemStatement}
-                            onChange={(e) => setProblemStatement(e.target.value)}
-                            placeholder="Problem Statement or Domain"
-                            onKeyDown={(e) => e.key === 'Enter' && generateIdea()}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="e.g. torvalds"
                         />
                     </div>
-
-                    <div className="layout-row">
-                        <div style={{ flex: 1 }}>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder="GitHub Username"
-                            />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                            <input
-                                type="text"
-                                value={skills}
-                                onChange={(e) => setSkills(e.target.value)}
-                                placeholder="Skills (e.g. React, Three.js)"
-                            />
-                        </div>
+                    <div className="col form-group">
+                        <label>Skills</label>
+                        <input
+                            type="text"
+                            value={skills}
+                            onChange={(e) => setSkills(e.target.value)}
+                            placeholder="e.g. React, Python, Three.js"
+                        />
                     </div>
+                </div>
 
-                    <div className="mt-8">
-                        <button
-                            className="btn-cyber"
-                            onClick={generateIdea}
-                            disabled={loading}
-                        >
-                            {loading ? 'PROCESSING DATA...' : 'INITIALIZE GENERATION'}
-                        </button>
-                    </div>
+                <div className="mt-large">
+                    <button
+                        className="btn-primary"
+                        onClick={generateIdea}
+                        disabled={loading}
+                    >
+                        {loading ? 'Analyzing Trends & Generating...' : 'Generate Winning Idea'}
+                    </button>
                 </div>
             </div>
 
             {error && (
-                <div style={{ color: '#ff0055', textAlign: 'center', marginTop: '2rem', fontFamily: 'monospace' }}>
-                    [ERROR]: {error}
+                <div className="error-msg fade-in">
+                    {error}
                 </div>
             )}
 
             {idea && (
-                <div className="result-frame fade-in">
-                    <div className="result-header">
-                        <span style={{ fontFamily: 'monospace', color: '#00f2ff' }}>ID: {Math.floor(Math.random() * 999999)}</span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span style={{ fontSize: '0.8rem', color: '#ff00ff', letterSpacing: '2px' }}>LIVE</span>
-                            <div className="status-dot"></div>
+                <div className="clean-card fade-in mt-large">
+                    <div className="mb-small" style={{ textAlign: 'center' }}>
+                        <h2>{idea.title}</h2>
+                        <p style={{ fontStyle: 'italic', color: '#94a3b8', fontSize: '1.1rem' }}>
+                            "{idea.tagline}"
+                        </p>
+                    </div>
+
+                    <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.5rem', borderRadius: '8px' }}>
+                        <h3>The Concept</h3>
+                        <p style={{ color: '#e2e8f0', lineHeight: 1.7 }}>{idea.description}</p>
+                    </div>
+
+                    <div className="feature-grid">
+                        <div>
+                            <h3>Tech Stack</h3>
+                            <div className="tag-container">
+                                {idea.tech_stack.map((tech) => (
+                                    <span key={tech} className="tag">{tech}</span>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3>Key Features</h3>
+                            <ul className="feature-list">
+                                {idea.key_features.map((feature) => (
+                                    <li key={feature}>{feature}</li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
 
-                    <div className="result-content">
-                        <div className="text-center">
-                            <h2>{idea.title}</h2>
-                            <span className="tagline">"{idea.tagline}"</span>
-                        </div>
-
-                        <div className="mb-4" style={{ borderLeft: '2px solid #00f2ff', paddingLeft: '1.5rem', marginBottom: '3rem' }}>
-                            <p style={{ fontSize: '1.1rem', lineHeight: '1.8', color: '#e0e0e0' }}>{idea.description}</p>
-                        </div>
-
-                        <div className="grid-cyber">
-                            <div>
-                                <h3>Tech Stack Database</h3>
-                                <div>
-                                    {idea.tech_stack.map((tech) => (
-                                        <span key={tech} className="tech-tag">{tech}</span>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <h3>Core Modules</h3>
-                                <ul className="cyber-list">
-                                    {idea.key_features.map((feature) => (
-                                        <li key={feature}>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div style={{ marginTop: '3rem', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '1.5rem' }}>
-                            <span style={{ color: '#707090', fontSize: '0.8rem', letterSpacing: '0.1em' }}>AMBITION METRIC:</span>
-                            <p style={{ color: '#fff', marginTop: '0.5rem' }}>{idea.challenge_addressed}</p>
-                        </div>
+                    <div className="mt-large pt-3" style={{ borderTop: '1px solid #334155' }}>
+                        <strong style={{ color: '#3b82f6' }}>Challenge Addressed:</strong> <span style={{ color: '#cbd5e1' }}>{idea.challenge_addressed}</span>
                     </div>
                 </div>
             )}
