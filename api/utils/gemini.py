@@ -33,8 +33,9 @@ async def generate_hackathon_idea(skills: list[str], problem_statement: str | No
     prompt = f"""
     You are a World-Class Hackathon Strategist and Technical Mentor. Your goal is to conceive a winning, innovative hackathon project idea that stands out to judges.
 
-    User Profile:
+    User/Team Profile:
     - Skills & Technologies: {', '.join(skills) if skills else "General/No specific skills provided (Assume standard modern web stack)"}
+    - Context: The idea should leverage the collective strengths of this skill pool to create a high-impact solution.
     
     Current Industry Trends:
     {', '.join(trends)}

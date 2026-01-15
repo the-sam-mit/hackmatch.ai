@@ -20,10 +20,14 @@ async def generate_idea(request: UserRequest):
         all_skills = set(request.skills)
         
         # 1. Fetch User Data (Optional)
+        # 1. Fetch User Data (Optional)
         if request.username:
-             github_data = await get_user_data(request.username)
-             all_skills.update(github_data.get("languages", []))
-             all_skills.update(github_data.get("topics", []))
+             usernames = [u.strip() for u in request.username.split(',') if u.strip()]
+             if usernames:
+                from api.utils.github import get_team_data
+                github_data = await get_team_data(usernames)
+                all_skills.update(github_data.get("languages", []))
+                all_skills.update(github_data.get("topics", []))
         
         # 2. Generate Idea using Gemini
         idea = await generate_hackathon_idea(

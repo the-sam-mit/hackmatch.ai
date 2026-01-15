@@ -250,3 +250,30 @@ input[type="text"]::placeholder {
   margin-top: 2rem;
   text-align: center;
 }
+
+/* GitHub Link */
+.github-link {
+  color: var(--text-label);
+  transition: color 0.15s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.github-link:hover {
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.github-link svg {
+  fill: currentColor;
+}
+
+@media (max-width: 640px) {
+  .github-link span {
+    display: inline;
+  }
+}
