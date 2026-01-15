@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import HowToUse from './components/HowToUse'
 
 interface Idea {
     title: string
@@ -56,6 +57,8 @@ export default function Home() {
             <p className="subtitle fade-in">
                 Turn your skills into a winning hackathon project using Agentic AI.
             </p>
+
+            <HowToUse />
 
             <div className="clean-card fade-in" style={{ animationDelay: '0.1s' }}>
                 <div className="form-group">
