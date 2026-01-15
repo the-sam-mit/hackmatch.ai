@@ -6,8 +6,7 @@ Build and deploy a Hackathon Idea Generator using:
 - **AI**: Google Gemini 1.5 Flash
 
 ## Quick Demo
-
-<video src="demoVideo.webm" controls width="100%"></video>
+<video src="https://github.com/user-attachments/assets/625c4393-3b3c-4167-827c-884e787fdcda" controls width="100%"></video>
 
 ## Prerequisites
 To run this project locally, you must have the following installed on your machine:
