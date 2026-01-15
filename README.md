@@ -5,6 +5,10 @@ Build and deploy a Hackathon Idea Generator using:
 - **Frontend**: Next.js (App Router)
 - **AI**: Google Gemini 1.5 Flash
 
+## Quick Demo
+
+<video src="demoVideo.webm" controls width="100%"></video>
+
 ## Prerequisites
 To run this project locally, you must have the following installed on your machine:
 1.  **Node.js** (v18+) and **npm** (or yarn/pnpm)
